@@ -17,7 +17,14 @@ export default function LoginScreen({ navigation }) {
       localStorage.setItem('token', token);
       localStorage.setItem('usuario', JSON.stringify(usuario));
 
-      navigation.navigate('Main');
+      const rol = usuario.rol;
+
+      if (rol === 'PANADERO' || rol === 'ADMIN') {
+        navigation.navigate('Operador');
+      } else {
+        navigation.navigate('Main');
+      }
+
     } catch (error) {
       Alert.alert('Error', 'Credenciales incorrectas');
       console.error('Login error:', error.response?.data || error.message);

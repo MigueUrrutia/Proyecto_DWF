@@ -12,15 +12,20 @@ import java.util.Date;
 public class JwtUtils {
 
     private final SecretKey jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long jwtExpirationMs = 86400000; 
+    private final long jwtExpirationMs = 86400000;
 
     public String generateToken(String correo, String rol) {
         return Jwts.builder()
                 .setSubject(correo)
-                .claim("rol", rol)
+                .claim("rol", "ROLE_" + rol) // Prefijo requerido por Spring Security
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(jwtSecret)
                 .compact();
+    }
+
+    // 🔥 Añade este método para exponer la clave secreta
+    public SecretKey getJwtSecret() {
+        return jwtSecret;
     }
 }

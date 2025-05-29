@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { useCart } from '../context/CartContext';
-import Header from './Header';
 
 export default function ReceiptScreen() {
   const { cart } = useCart();

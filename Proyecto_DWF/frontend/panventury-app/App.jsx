@@ -12,15 +12,20 @@ import CheckoutScreen from './src/screens/CheckoutScreen';
 import ReceiptScreen from './src/screens/ReceiptScreen';
 import TrackingScreen from './src/screens/TrackingScreen';
 import OperatorDashboardScreen from './src/screens/OperatorDashboardScreen';
+import LogoutButton from './src/screens/LogoutButton';
 import { CartProvider } from './src/context/CartContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MainTabs() {
+function MainTabs({ navigation }) {
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const rol = usuario?.rol;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        headerRight: () => <LogoutButton navigation={navigation} />,
         tabBarIcon: ({ color, size }) => {
           let iconName;
           switch (route.name) {
@@ -38,12 +43,20 @@ function MainTabs() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Inicio" component={HomeScreen} />
-      <Tab.Screen name="Productos" component={ProductsScreen} />
-      <Tab.Screen name="Carrito" component={CartScreen} />
-      <Tab.Screen name="Recibo" component={ReceiptScreen} />
-      <Tab.Screen name="Seguimiento" component={TrackingScreen} />
-      <Tab.Screen name="Operador" component={OperatorDashboardScreen} />
+      {rol === 'CLIENTE' && (
+        <>
+          <Tab.Screen name="Inicio" component={HomeScreen} />
+          <Tab.Screen name="Productos" component={ProductsScreen} />
+          <Tab.Screen name="Carrito" component={CartScreen} />
+          <Tab.Screen name="Recibo" component={ReceiptScreen} />
+          <Tab.Screen name="Seguimiento" component={TrackingScreen} />
+        </>
+      )}
+
+     {(rol === 'PANADERO' || rol === 'ADMIN' || rol === 'EMPLEADO') && (
+  <Tab.Screen name="Operador" component={OperatorDashboardScreen} />
+)}
+
     </Tab.Navigator>
   );
 }
@@ -54,7 +67,12 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Main"
+            component={MainTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Operador" component={OperatorDashboardScreen} />
           <Stack.Screen name="Pago" component={CheckoutScreen} />
         </Stack.Navigator>
       </NavigationContainer>

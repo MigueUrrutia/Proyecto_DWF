@@ -21,6 +21,8 @@ public class Pedido {
 
     private String nombreCliente;
 
+    private String estado;
+
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetallePedido> detalles = new ArrayList<>();
 }

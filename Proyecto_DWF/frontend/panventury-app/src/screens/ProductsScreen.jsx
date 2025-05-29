@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, TextInput, Alert, ImageBackground } from 'react-native';
 import { useCart } from '../context/CartContext';
-import Header from './Header';
 
 const products = [
   { id: '1', name: 'Salpor arroz', price: 0.5 },

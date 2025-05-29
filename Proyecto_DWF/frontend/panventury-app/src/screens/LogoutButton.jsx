@@ -1,40 +1,25 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Header from './Header';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function LogoutButton() {
-  const navigation = useNavigation();
-
+export default function LogoutButton({ navigation }) {
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+    localStorage.clear();
+    navigation.replace('Login');
   };
 
   return (
-    <TouchableOpacity onPress={handleLogout} style={styles.button}>
-      <Text style={styles.text}>Cerrar Sesión</Text>
+    <TouchableOpacity style={styles.button} onPress={handleLogout}>
+      <Ionicons name="log-out-outline" size={24} color="#fff" />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    position: 'absolute',
-    top: 40,
-    right: 20,
-    backgroundColor: '#e53935',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    zIndex: 9999,
-  },
-  text: {
-    color: '#fff',
-    fontWeight: 'bold',
+    marginRight: 12,
+    backgroundColor: '#d9534f',
+    padding: 8,
+    borderRadius: 6,
   }
 });
